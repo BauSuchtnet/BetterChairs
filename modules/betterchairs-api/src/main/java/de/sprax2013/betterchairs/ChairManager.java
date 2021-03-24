@@ -86,12 +86,6 @@ public class ChairManager {
         ChairType chairType = (chairNMS.isStair(block)) ? ChairType.STAIR : (chairNMS.isSlab(block)) ? ChairType.SLAB :
                 (chairNMS.isFurniture(block)) ? ChairType.FURNITURE : ChairType.CUSTOM;
 
-        // Normal blocks and slabs that are placed in the upper half of an block need the player to sit 0.5 blocks higher
-        /*double yOffset = (!chairNMS.isStair(block) && !chairNMS.isSlab(block)) ||
-                (chairNMS.isSlab(block) && chairNMS.isSlabTop(block)) || (chairNMS.isFurniture(block)) ? 0.5 : 0;*/
-
-        Bukkit.broadcast("using offset: " + chairType.getYOffset(), "debug");
-
         ArmorStand armorStand = instance.chairNMS.spawnChairArmorStand(
                 block.getLocation().add(0.5, -1.2 + chairType.getYOffset(), 0.5), ChairNMS.getRegenerationAmplifier(player));
 
