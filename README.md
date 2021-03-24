@@ -1,102 +1,167 @@
-<p align="center">
-  <img src="./modules/betterchairs-plugin/src/main/resources/icon.png">
-</p>
+# Better Chairs Default Config
+````yaml
 
-<p align="center">
-  <a href="https://JavaDocs.Sprax2013.de/BetterChairs/">
-    <img alt="JavaDocs" src="https://img.shields.io/badge/JavaDocs-latest-succes?logo=Java">
-  </a>
-  <a href="https://sprax.me/discord">
-    <img alt="Get Support on Discord" src="https://img.shields.io/discord/344982818863972352.svg?label=Get%20Support&logo=Discord&color=blue">
-  </a>
-  <a href="https://www.patreon.com/sprax">
-    <img alt="Support me on Patreon"
-         src="https://img.shields.io/badge/-Support%20me%20on%20Patreon-%23FF424D?logo=patreon&logoColor=white">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://github.com/SpraxDev/BetterChairs/actions?query=workflow%3A%22Build+with+Maven%22">
-    <img alt="Build with Maven" src="https://github.com/Sprax2013/BetterChairs/workflows/Build%20with%20Maven/badge.svg">
-  </a>
-  <a href="https://sonarcloud.io/dashboard?id=SpraxDev_BetterChairs">
-    <img alt="Quality Gate Status"
-         src="https://sonarcloud.io/api/project_badges/measure?project=SpraxDev_BetterChairs&metric=alert_status">
-  </a>
-</p>
-
-# BetterChairs (Remastered)
-BetterChairs allows you and your players to sit on chairs. It's that simple!
-Every stair and every half block can be a chair if you want it to!
-
-It is:
-* **fast**, as it has been written with performance in mind
-* **easily updated**, because you get notified about new versions, and your configurations get upgraded automatically
-* **customizable**, as it generates configuration files for you
-* **reliable**, as it supports all Minecraft versions newer than 1.8 natively
-* **free** and OpenSource. Request Features or add them yourself!
+  # BetterChairs Remastered
+  # 
+  # Support: https://Sprax.me/Discord
+  # Updates and Information:
+  # Statistics: https://bstats.org/plugin/bukkit/BetterChairs%20Remastered/8214
+  # Information for developers: https://github.com/SpraxDev/BetterChairs/wiki
 
 
-![Screenshot of players sitting on chairs](./docs/images/Screenshot4.jpg)
+  # You shouldn't make any changes to this
+  version: 2
+  Chairs:
 
+    # Allowed distance a player is allowed to have when trying to sit? (-1 to ignore)
+    AllowedDistanceToChair: -1
 
-## Commands & Permissions
-|        Command        |              Permission              | Description               |
-|:---------------------:|:------------------------------------:|:-------------------------:|
-| -                     | `BetterChairs.use` (default: `true`) | Allows players to sit on chairs |
-| `/BetterChairs <toggle\|on\|off\|status>` | `BetterChairs.cmd.toggle` (default: `true`) | Allows individual players to disabled chairs for them (aliases: `/toggleChairs`, `/bct`) |
-| `/BetterChairs reset` | `BetterChairs.cmd.reset`             | Allows admins to eject all players from their chairs |
-| `/BetterChairs reload`| `BetterChairs.cmd.reload`            | Allows admins to reload the plugin's configuration files |
-| -                     | `BetterChairs.updater`               | Notifies players about updates when joining the server |
+    # Should a player automatically look forward when starting to sit
+    AutoRotatePlayer: true
 
+    # Does a player need his hands empty when trying to sit?
+    NeedEmptyHands: true
 
-## Useful Links
-* Download the latest version from [GitHub](https://github.com/SpraxDev/BetterChairs/releases/latest),
-  [Songoda](https://songoda.com/marketplace/product/betterchairs-remastered-by-spraxdev.489),
-  [SpigotMC](https://www.spigotmc.org/resources/betterchairs-remastered.84809/)
-* [The Wiki](https://github.com/SpraxDev/BetterChairs/wiki) contains the **API Documentation**
+    # Does a chair need signs on both sides attached to be detected as an chair
+    NeedsSignsOnBothSides: false
 
-[![bStats Graph](https://bstats.org/signatures/bukkit/BetterChairs%20Remastered.svg)](https://bstats.org/plugin/bukkit/BetterChairs%20Remastered/8214)
+    # Enable this if you want players to be able to sit on chairs
+    # while other plugins (like WorldGuard or PlotSquared) are not
+    # allowing interactions/use with the chair blocks.
+    IgnoreOtherPluginsPreventingInteract: false
 
-* Original Project (No activity):
-  [GitHub](https://github.com/BlackScarx/BetterChairs),
-  [SpigotMC](https://www.spigotmc.org/resources/better-chairs.18705/),
-  [bStats](https://bstats.org/plugin/bukkit/BetterChairs/768)
+    # Enable this if you want BetterChairs to remember a player who used /bc <toggle|on|off> after a plugin reload or him rejoining
+    RememberIfPlayerDisabledChairsAfterRelogin: true
+    Position:
 
+      # Set to false, if you do not care about a player suffocating while sitting
+      NeedAirAbove: true
 
-## BetterChairs API (+ Events)
-Please take a look at [the documentation](https://github.com/SpraxDev/BetterChairs/wiki/BetterChairs-API) and
-the [JavaDocs](https://JavaDocs.Sprax2013.de/BetterChairs/).
+      # Set to false, to force chairs to have a block below them
+      AllowAirBelow: true
 
+    # Can stairs be chairs?
+    UseStairs: true
 
-## What are the differences to the original version?
-* Active author fixing bugs, adding features and add version support
-* Support all versions newer than 1.8 (and in theory some older versions too)
-* **All** stairs and slabs are supported in all versions
-  * Have **every** block you like to act as a chair *(Experimental)*
-* You can sit on slabs that are placed in the upper-half of a block
-* A working Update-Notifier that won't send garbage messages if the Updater fails to check for an update
-* Check if Signs are really attached to the chair (Requiring signs can be enabled in `config.yml`)
-* This version is less aggressive when a player tries to sit on an chair (Can be partly re-enabled in `config.yml`)
-* The content of `config.yml` and `messages.yml` has been restructured (old files are automatically converted)
-* Have a world whitelist **or** blacklist
-* Well documented API
-* Fully rewritten code (Improves: Maintainability, Performance, Readability)
-  * Moved to Maven and configured GitHub Actions to automatically compile the project
+    # Can half slabs be chairs too?
+    UseSlabs: false
+    LeavingChair:
 
+      # Should a player be teleported to its original position when leaving a chair
+      TeleportPlayerToOldLocation: true
 
-## Why did you create *BetterChairs (Remastered)*?
-BetterChairs started in 2016 on SpigotMC and has been developed by
-[BlackScarx](https://github.com/BlackScarx). Some years later,
-I made my first commits to the project by adding custom Spigot-Events I wanted to use.
+      # Should a player keep his head rotation when teleported to its original position
+      KeepHeadRotation: true
+    Messages:
 
-I have been granted write-access to that repository afterwards but could not contact
-BlackScarx and created this fork to fit my needs and provide support for new Minecraft version.
+      # Should the player receive a message when the chair is already occupied
+      AlreadyOccupied: false
 
-My fork quickly made some big changes, and I decided to fully recode and redesign this project.
-I started with moving to Maven and deleting all those `spigot.jar`s from the repository.
+      # Should the player receive a message when a chair is missing signs on both sided
+      NeedsSignsOnBothSides: false
 
-Because of that I rewrote the commit history and detached my Fork on GitHub to be no longer displayed as one
-(always said *'27 commits behind BlackScarx:master'* because the commit hashes changed).
+      # Should the player receive a message when he starts sitting
+      NowSitting: false
+    Regeneration:
 
-Today, I unofficially took over the project as soon as BlackScarx got inactive and am now maintaining this repository.
+      # Should player receive regeneration effect when sitting? (Needs permission BetterChairs.regeneration)
+      Enabled: false
+
+      # What amplifier should be applied?
+      Amplifier: 1
+  Furniture:
+
+    # Can some furniture be chairs too?
+    Use: true
+
+    # List of Furniture to Use
+    List:
+      - OAK_CHAIR
+      - SPRUCE_CHAIR
+      - BIRCH_CHAIR
+      - JUNGLE_CHAIR
+      - ACACIA_CHAIR
+      - DARK_OAK_CHAIR
+      - STONE_CHAIR
+      - GRANITE_CHAIR
+      - DIORITE_CHAIR
+      - ANDESITE_CHAIR
+      - STRIPPED_OAK_CHAIR
+      - STRIPPED_SPRUCE_CHAIR
+      - STRIPPED_BIRCH_CHAIR
+      - STRIPPED_JUNGLE_CHAIR
+      - STRIPPED_ACACIA_CHAIR
+      - STRIPPED_DARK_OAK_CHAIR
+      - WHITE_SOFA
+      - ORANGE_SOFA
+      - MAGENTA_SOFA
+      - LIGHT_BLUE_SOFA
+      - YELLOW_SOFA
+      - LIME_SOFA
+      - PINK_SOFA
+      - GRAY_SOFA
+      - LIGHT_GRAY_SOFA
+      - CYAN_SOFA
+      - PURPLE_SOFA
+      - BLUE_SOFA
+      - BROWN_SOFA
+      - GREEN_SOFA
+      - RED_SOFA
+      - BLACK_SOFA
+      - RAINBOW_SOFA
+      - OAK_PARK_BENCH
+      - SPRUCE_PARK_BENCH
+      - BIRCH_PARK_BENCH
+      - JUNGLE_PARK_BENCH
+      - ACACIA_PARK_BENCH
+      - DARK_OAK_PARK_BENCH
+      - STRIPPED_OAK_PARK_BENCH
+      - STRIPPED_SPRUCE_PARK_BENCH
+      - STRIPPED_BIRCH_PARK_BENCH
+      - STRIPPED_JUNGLE_PARK_BENCH
+      - STRIPPED_ACACIA_PARK_BENCH
+      - STRIPPED_DARK_OAK_PARK_BENCH
+  Filter:
+    Worlds:
+
+      # Should we only enable chairs in specific worlds?
+      Enabled: false
+
+      # Should be the list below be used as blacklist or whitelist?
+      UseAsBlacklist: false
+
+      # List of all enabled/disabled worlds
+      Names:
+        - worldname
+        - worldname2
+    Blocks:
+
+      # Should we only enable specific blocks as chairs?
+      Enabled: false
+
+      # Setting this to true, won't check if a chair
+      # is a stair or slab but only look if it is in the list below
+      # 
+      # This is kinda experimental.
+      # Enabling overwrites 'UseStairs' and 'UseSlabs' further above
+      AllowAllTypes: false
+
+      # Should be the list below be used as blacklist or whitelist?
+      UseAsBlacklist: false
+
+      # List of all enabled/disabled block types
+      # 
+      # The names from Minecraft do not always work
+      # Full list: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+      Names:
+        - blockname
+        - blockname2
+  Updater:
+
+    # Should we check for new versions and report to the console? (Recommended)
+    CheckForUpdates: true
+
+    # Should be notify admins when they join the server? (Permission: BetterChairs.updater)
+    NotifyOnJoin: true
+
+````
