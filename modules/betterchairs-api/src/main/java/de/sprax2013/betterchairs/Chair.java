@@ -19,12 +19,14 @@ public class Chair {
     protected final ArmorStand armorStand;
     protected final Player player;
     private final Location playerOriginalLoc;
+    private final ChairType chairType;
 
-    Chair(Block block, ArmorStand armorStand, Player player) {
+    Chair(Block block, ArmorStand armorStand, Player player, ChairType chairType) {
         this.block = block;
         this.armorStand = armorStand;
         this.player = player;
         this.playerOriginalLoc = player.getLocation();
+        this.chairType = chairType;
     }
 
     /**
@@ -40,7 +42,7 @@ public class Chair {
     public boolean isStair() {
         if (ChairManager.getInstance() == null) throw new IllegalStateException(ERR_MANAGER_NOT_AVAILABLE);
 
-        return ChairManager.getInstance().chairNMS.isStair(block);
+        return ChairManager.getInstance().chairNMS.isStair(block) || ChairManager.getInstance().chairNMS.isFurniture(block);
     }
 
     /**
@@ -49,15 +51,7 @@ public class Chair {
      * @return true if the chair's block is a stair, false otherwise
      */
     public @NotNull ChairType getType() {
-        if (ChairManager.getInstance() == null) throw new IllegalStateException(ERR_MANAGER_NOT_AVAILABLE);
-
-        if (ChairManager.getInstance().chairNMS.isStair(block))
-            return ChairType.STAIR;
-
-        if (ChairManager.getInstance().chairNMS.isSlab(block))
-            return ChairType.SLAB;
-
-        return ChairType.CUSTOM;
+        return chairType;
     }
 
     @SuppressWarnings("unused")

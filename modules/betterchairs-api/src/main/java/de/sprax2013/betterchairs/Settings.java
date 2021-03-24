@@ -55,6 +55,8 @@ public class Settings {
             "Chairs.UseStairs", true, "Can stairs be chairs?");
     public static final ConfigEntry USE_SLABS = config.createEntry(
             "Chairs.UseSlabs", false, "Can half slabs be chairs too?");
+    public static final ConfigEntry USE_FURNITURE = config.createEntry(
+            "Furniture.Use", true, "Can some furniture be chairs too?");
 
     public static final ConfigEntry LEAVING_CHAIR_TELEPORT_TO_OLD_LOCATION = config.createEntry(
             "Chairs.LeavingChair.TeleportPlayerToOldLocation", true,
@@ -87,9 +89,11 @@ public class Settings {
             "Filter.Worlds.UseAsBlacklist", false,
             "Should be the list below be used as blacklist or whitelist?");
     public static final ConfigEntry WORLD_FILTER_NAMES = config.createEntry(
-            "Filter.Worlds.Names", new String[] {"worldname", "worldname2"},
+            "Filter.Worlds.Names", new String[]{"worldname", "worldname2"},
             "List of all enabled/disabled worlds");
-
+    public static final ConfigEntry FURNITURE = config.createEntry(
+            "Furniture.List", new String[]{"OAK_CHAIR", "SPRUCE_CHAIR"},
+            "List of Furniture to Use");
     public static final ConfigEntry MATERIAL_FILTER_ENABLED = config.createEntry(
             "Filter.Blocks.Enabled", false,
             "Should we only enable specific blocks as chairs?");
@@ -102,7 +106,7 @@ public class Settings {
             "Filter.Blocks.UseAsBlacklist", false,
             "Should be the list below be used as blacklist or whitelist?");
     public static final ConfigEntry MATERIAL_FILTER_NAMES = config.createEntry(
-            "Filter.Blocks.Names", new String[] {"blockname", "blockname2"},
+            "Filter.Blocks.Names", new String[]{"blockname", "blockname2"},
             "List of all enabled/disabled block types\n\n" +
                     "The names from Minecraft do not always work\n" +
                     "Full list: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html");
@@ -143,6 +147,7 @@ public class Settings {
                         needsEmptyHands = yaml.get("No item in hand"), /* boolean */
                         needsSignsOnBothSides = yaml.get("Need to sign or chair on each side"), /* boolean */
                         useSlabs = yaml.get("Use slab"), /* boolean */
+                        useFurniture = yaml.get("Furniture Use"), /* boolean */
 
                         sendMsgWhenChairNeedsSigns = yaml.get("Send message if the Chairs need sign or chair"), /* boolean */
                         sendMsgWhenChairOccupied = yaml.get("Send message if the chairs is already occupied"), /* boolean */
@@ -152,6 +157,7 @@ public class Settings {
                         regenerationWhenSitting = yaml.get("Regen when sit"), /* boolean */
 
                         allowedDistanceToStairs = yaml.get("Distance of the stairs"), /* int */
+                        furnitureList = yaml.get("Furniture List"), /* List<String> */
                         disabledWorlds = yaml.get("Disable world"); /* List<String> */
 
                 // Chairs.*
@@ -169,6 +175,9 @@ public class Settings {
                 }
                 if (useSlabs instanceof Boolean) {
                     USE_SLABS.setValue(useSlabs);
+                }
+                if (useFurniture instanceof Boolean) {
+                    USE_FURNITURE.setValue(useSlabs);
                 }
 
                 // Chairs.Messages.*
@@ -202,6 +211,18 @@ public class Settings {
                     WORLD_FILTER_NAMES.setValue(newDisabledWorlds);
                 }
 
+                // Furnitures
+                if (furnitureList instanceof List) {
+                    List<String> newDisabledWorlds = new ArrayList<>();
+
+                    //noinspection rawtypes
+                    for (Object obj : (List) furnitureList) {
+                        newDisabledWorlds.add(obj.toString());
+                    }
+
+                    FURNITURE.setValue(newDisabledWorlds);
+                }
+
                 // Updater.CheckForUpdates
                 if (checkForUpdate instanceof Boolean) {
                     UPDATER_ENABLED.setValue(checkForUpdate);
@@ -228,7 +249,6 @@ public class Settings {
          * @param version The current config version or {@code "-1"} if none set
          * @param file    The config file
          * @param yaml    The current YAML-File
-         *
          * @return true on success, false on failure
          */
         boolean doUpgrade(String version, File file, YamlConfiguration yaml);

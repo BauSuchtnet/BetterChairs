@@ -1,6 +1,8 @@
 package de.sprax2013.betterchairs;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
@@ -8,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 /**
  * Provides abstraction to be used in maven modules with the specified spigot version<br><br>
@@ -33,9 +37,7 @@ public abstract class ChairNMS {
      *
      * @param loc                   The location for the Chair-ArmorStand
      * @param regenerationAmplifier The amplifier for the regeneration effect
-     *
      * @return The created ArmorStand to be used for an Chair
-     *
      * @see #getRegenerationAmplifier(Player)
      */
     @NotNull
@@ -43,7 +45,6 @@ public abstract class ChairNMS {
 
     /**
      * @param armorStand The ArmorStand that should be deleted
-     *
      * @throws IllegalArgumentException if {@code armorStand} is not an instance of CustomArmorStand
      */
     public abstract void killChairArmorStand(@NotNull ArmorStand armorStand);
@@ -57,12 +58,22 @@ public abstract class ChairNMS {
 
     /**
      * @param block The {@link Block} to check
-     *
      * @return true if the block is a half slab (not double slab!), false otherwise
      */
     public abstract boolean isSlab(@NotNull Block block);
 
     public abstract boolean isSlabTop(@NotNull Block block);
+
+    /**
+     * **FURNITURE MODIFICATION**
+     *
+     * @param block The {@link Block} to check
+     * @return true if the block is funtiure
+     */
+    public boolean isFurniture(@NotNull Block block) {
+        return Objects.requireNonNull(Settings.FURNITURE.getValueAsStringList()).contains(block.getType().name());
+    }
+
 
     public abstract boolean hasEmptyMainHand(@NotNull Player player);
 
@@ -72,9 +83,7 @@ public abstract class ChairNMS {
      * This can for example be used to un-cancel an {@link org.bukkit.event.entity.EntitySpawnEvent}
      *
      * @param armorStand {@link ArmorStand} to check
-     *
      * @return true if ArmorStand is or will be used as Chair, false otherwise
-     *
      * @see ChairManager#isChair(ArmorStand)
      */
     public abstract boolean isChair(@NotNull ArmorStand armorStand);

@@ -90,7 +90,6 @@ public class EventListener implements Listener {
     private void onInteract(PlayerInteractEvent e) {
         if (e.isCancelled() && !Settings.IGNORES_INTERACT_PREVENTION.getValueAsBoolean()) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-
         // Check Player
         if (!e.getClickedBlock().getWorld().equals(e.getPlayer().getLocation().getWorld())) return; // Happens sometimes
         if (e.getPlayer().isSneaking()) return;
@@ -114,7 +113,8 @@ public class EventListener implements Listener {
         if ((!Settings.MATERIAL_FILTER_ENABLED.getValueAsBoolean() ||
                 !Settings.MATERIAL_FILTER_ALLOW_ALL_TYPES.getValueAsBoolean()) &&
                 !getManager().chairNMS.isStair(e.getClickedBlock()) &&
-                !getManager().chairNMS.isSlab(e.getClickedBlock())) return; // Not a Stair or Slab
+                !getManager().chairNMS.isSlab(e.getClickedBlock()) &&
+                !getManager().chairNMS.isFurniture(e.getClickedBlock())) return; // Not a Stair or Slab
 
         if (!e.getClickedBlock().getRelative(BlockFace.UP).isEmpty() &&
                 Settings.CHAIR_NEED_AIR_ABOVE.getValueAsBoolean()) return;  // Needs air above chair
@@ -122,8 +122,9 @@ public class EventListener implements Listener {
         if (e.getClickedBlock().getRelative(BlockFace.DOWN).isEmpty() &&
                 !Settings.CHAIR_ALLOW_AIR_BELOW.getValueAsBoolean()) return;    // Does not allow air below chair
 
-        if (!getManager().chairNMS.isStair(e.getClickedBlock()) &&
-                !getManager().chairNMS.isSlab(e.getClickedBlock())) return; // Not a Stair or Slab
+        if (!getManager().chairNMS.isStair(e.getClickedBlock())
+                && !getManager().chairNMS.isSlab(e.getClickedBlock())
+                && !getManager().chairNMS.isFurniture(e.getClickedBlock())) return; // Not a Stair or Slab nor furniture
 
         // Block type disabled in config?
         if (!Settings.MATERIAL_FILTER_ENABLED.getValueAsBoolean() ||
@@ -195,6 +196,7 @@ public class EventListener implements Listener {
                         Settings.ALLOWED_DISTANCE_TO_CHAIR.getValueAsInt()) {
             return;
         }
+
 
         // Spawn Chair
         if (getManager().create(e.getPlayer(), e.getClickedBlock())) {

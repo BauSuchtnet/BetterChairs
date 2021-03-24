@@ -83,14 +83,19 @@ public class ChairManager {
         if (!Bukkit.isPrimaryThread()) throw new IllegalStateException(Messages.ERR_ASYNC_API_CALL);
         if (isOccupied(block)) return false;
 
+        ChairType chairType = (chairNMS.isStair(block)) ? ChairType.STAIR : (chairNMS.isSlab(block)) ? ChairType.SLAB :
+                (chairNMS.isFurniture(block)) ? ChairType.FURNITURE : ChairType.CUSTOM;
+
         // Normal blocks and slabs that are placed in the upper half of an block need the player to sit 0.5 blocks higher
-        double yOffset = (!chairNMS.isStair(block) && !chairNMS.isSlab(block)) ||
-                (chairNMS.isSlab(block) && chairNMS.isSlabTop(block)) ? 0.5 : 0;
+        /*double yOffset = (!chairNMS.isStair(block) && !chairNMS.isSlab(block)) ||
+                (chairNMS.isSlab(block) && chairNMS.isSlabTop(block)) || (chairNMS.isFurniture(block)) ? 0.5 : 0;*/
+
+        Bukkit.broadcast("using offset: " + chairType.getYOffset(), "debug");
 
         ArmorStand armorStand = instance.chairNMS.spawnChairArmorStand(
-                block.getLocation().add(0.5, -1.2 + yOffset, 0.5), ChairNMS.getRegenerationAmplifier(player));
+                block.getLocation().add(0.5, -1.2 + chairType.getYOffset(), 0.5), ChairNMS.getRegenerationAmplifier(player));
 
-        Chair chair = new Chair(block, armorStand, player);
+        Chair chair = new Chair(block, armorStand, player, chairType);
 
         PlayerEnterChairEvent event = new PlayerEnterChairEvent(player, chair);
         Bukkit.getPluginManager().callEvent(event);

@@ -29,6 +29,7 @@ import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class v1_8_R3 extends ChairNMS {
+
     @Override
     public @NotNull ArmorStand spawnChairArmorStand(@NotNull Location loc, int regenerationAmplifier) {
         WorldServer nmsWorld = ((CraftWorld) Objects.requireNonNull(loc.getWorld())).getHandle();
