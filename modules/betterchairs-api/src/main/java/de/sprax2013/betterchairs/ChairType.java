@@ -1,7 +1,7 @@
 package de.sprax2013.betterchairs;
 
 public enum ChairType {
-    STAIR(0.5),
+    STAIR(0),
     SLAB(0.5),
     FURNITURE(0.18),
     CUSTOM(0);

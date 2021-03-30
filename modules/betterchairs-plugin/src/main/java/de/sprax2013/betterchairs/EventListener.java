@@ -88,7 +88,7 @@ public class EventListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onInteract(PlayerInteractEvent e) {
-        if (e.isCancelled() && !Settings.IGNORES_INTERACT_PREVENTION.getValueAsBoolean()) return;
+        //if (e.isCancelled() && !Settings.IGNORES_INTERACT_PREVENTION.getValueAsBoolean()) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         // Check Player
         if (!e.getClickedBlock().getWorld().equals(e.getPlayer().getLocation().getWorld())) return; // Happens sometimes
