@@ -19,6 +19,7 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.EntityTeleportEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.util.ArrayList;
@@ -80,6 +81,26 @@ public class EventListener implements Listener {
         return filteredMaterials;
     }
 
+    /* Handling for Players */
+
+    /**
+     * if a player gets teleported by a player or command
+     * we have to check if he's sitting on a chair.
+     * if not, they'll get not teleported properly, thus
+     * the world gets really buggy for them.
+     *
+     * @param event player teleport event
+     */
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent event) {
+        ChairManager instance = ChairManager.getInstance();
+        if (instance == null) return;
+        if (!event.getPlayer().hasMetadata("chair")) return;
+        Chair chair = instance.getChair(event.getPlayer());
+        if (chair == null) return;
+        instance.destroy(chair, false);
+    }
+
     /* Spawn and Destroy Chairs */
 
     /**
@@ -88,7 +109,7 @@ public class EventListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onInteract(PlayerInteractEvent e) {
-        //if (e.isCancelled() && !Settings.IGNORES_INTERACT_PREVENTION.getValueAsBoolean()) return;
+        if (e.isCancelled() && !Settings.IGNORES_INTERACT_PREVENTION.getValueAsBoolean()) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         // Check Player
         if (!e.getClickedBlock().getWorld().equals(e.getPlayer().getLocation().getWorld())) return; // Happens sometimes

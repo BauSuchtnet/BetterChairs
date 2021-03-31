@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -76,7 +77,6 @@ public class ChairManager {
      *
      * @param player The player that should sit
      * @param block  The block the player should sit on
-     *
      * @return true if player is now sitting on a chair, false otherwise
      */
     public boolean create(Player player, Block block) {
@@ -125,7 +125,7 @@ public class ChairManager {
 
         chairs.add(chair);
         armorStand.setPassenger(player);
-
+        player.setMetadata("chair", new FixedMetadataValue(ChairManager.getPlugin(), true));
         return true;
     }
 
@@ -135,7 +135,6 @@ public class ChairManager {
      * @param chair          The {@link Chair} that should be destroyed
      * @param teleportPlayer true, when called without an {@link org.bukkit.event.player.PlayerTeleportEvent}
      *                       being fired afterwards (e.g. {@link org.spigotmc.event.entity.EntityDismountEvent} does)
-     *
      * @see #destroy(Chair, boolean, boolean)
      */
     public void destroy(Chair chair, boolean teleportPlayer) {
@@ -159,7 +158,7 @@ public class ChairManager {
 
         chairNMS.killChairArmorStand(chair.armorStand);
         chairs.remove(chair);
-
+        chair.player.removeMetadata("chair", ChairManager.getPlugin());
         if (hasPassenger && teleportPlayer && Settings.LEAVING_CHAIR_TELEPORT_TO_OLD_LOCATION.getValueAsBoolean()) {
             Runnable task = () -> chair.player.teleport(chair.getPlayerLeavingLocation());
 
@@ -169,6 +168,7 @@ public class ChairManager {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), task);
             }
         }
+
     }
 
     public int destroyAll(boolean teleportPlayer) {
@@ -190,7 +190,6 @@ public class ChairManager {
 
     /**
      * @param b The block to check
-     *
      * @return true if a player is sitting on it, false otherwise
      */
     public boolean isOccupied(@NotNull Block b) {
@@ -249,7 +248,6 @@ public class ChairManager {
      * This may return true for ArmorStand not yet spawned and thus not yet a {@link Chair} that is ready
      *
      * @param armorStand The {@link ArmorStand} to check
-     *
      * @return true if the {@link ArmorStand} is used or may be used as {@link Chair}
      */
     public boolean isChair(@NotNull ArmorStand armorStand) {
