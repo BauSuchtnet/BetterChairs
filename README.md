@@ -1,4 +1,5 @@
 # Better Chairs Default Config
+**BITTE CHECKT OB `IgnoreOtherPluginsPreventingInteract` AUF TRUE IST**
 ````yaml
 
   # BetterChairs Remastered
@@ -28,7 +29,7 @@
     # Enable this if you want players to be able to sit on chairs
     # while other plugins (like WorldGuard or PlotSquared) are not
     # allowing interactions/use with the chair blocks.
-    IgnoreOtherPluginsPreventingInteract: false
+    IgnoreOtherPluginsPreventingInteract: true
 
     # Enable this if you want BetterChairs to remember a player who used /bc <toggle|on|off> after a plugin reload or him rejoining
     RememberIfPlayerDisabledChairsAfterRelogin: true
