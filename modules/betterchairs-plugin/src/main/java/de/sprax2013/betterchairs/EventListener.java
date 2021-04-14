@@ -1,6 +1,7 @@
 package de.sprax2013.betterchairs;
 
 import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -98,6 +99,10 @@ public class EventListener implements Listener {
         if (!event.getPlayer().hasMetadata("chair")) return;
         Chair chair = instance.getChair(event.getPlayer());
         if (chair == null) return;
+        if (event.getTo().getWorld().equals(chair.armorStand.getWorld())) {
+            double distanceSquared = event.getTo().distanceSquared(chair.armorStand.getLocation());
+            if (distanceSquared < 1.5) return;
+        }
         instance.destroy(chair, false);
     }
 
