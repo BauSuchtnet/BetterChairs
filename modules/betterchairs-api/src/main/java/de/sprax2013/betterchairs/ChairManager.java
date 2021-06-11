@@ -151,10 +151,6 @@ public class ChairManager {
     public void destroy(Chair chair, boolean teleportPlayer, boolean sameTickTeleport) {
         if (!Bukkit.isPrimaryThread()) throw new IllegalStateException(Messages.ERR_ASYNC_API_CALL);
 
-        for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
-            System.out.println(stackTraceElement.toString());
-        }
-
         boolean hasPassenger = chair.armorStand.getPassenger() != null;
 
         if (hasPassenger)
