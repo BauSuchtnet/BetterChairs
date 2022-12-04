@@ -40,6 +40,11 @@
     </issueManagement>
 
     <distributionManagement>
+    <repository>
+      <id>landania-repository-private</id>
+      <name>Landania Repository</name>
+      <url>https://repo.maven.landania.dev/private</url>
+    </repository>
         <repository>
             <id>sprax-repo</id>
             <url>https://repo.sprax2013.de/repository/maven-releases/</url>
@@ -77,4 +82,11 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+  <distributionManagement>
+    <repository>
+      <id>landania-repository-private</id>
+      <url>https://repo.maven.landania.dev/private</url>
+    </repository>
+  </distributionManagement>
+
 </project>

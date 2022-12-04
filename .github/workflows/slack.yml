@@ -1,0 +1,18 @@
+name: Slack Posting
+
+on:
+  push:
+
+jobs:
+  slack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_ICON: https://i.imgur.com/E49FWG4.png
+          SLACK_USERNAME: Landania
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_FOOTER: Aktivitätstracker
+          MSG_MINIMAL: ref,event,commit,actions url
