@@ -1,17 +1,16 @@
 package de.sprax2013.betterchairs;
 
-import org.bukkit.Bukkit;
+import de.tr7zw.changeme.nbtapi.NBTEntity;
+import java.util.Objects;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Provides abstraction to be used in maven modules with the specified spigot version<br><br>
@@ -23,6 +22,7 @@ import java.util.Objects;
  * </ul>
  */
 public abstract class ChairNMS {
+
     public static final int REGENERATION_EFFECT_DURATION = 3 * 20;    // In Ticks
 
     /**
@@ -41,11 +41,13 @@ public abstract class ChairNMS {
      * @see #getRegenerationAmplifier(Player)
      */
     @NotNull
-    public abstract ArmorStand spawnChairArmorStand(@NotNull Location loc, int regenerationAmplifier);
+    public abstract ArmorStand spawnChairArmorStand(Plugin plugin, @NotNull Location loc,
+        int regenerationAmplifier);
 
     /**
      * @param armorStand The ArmorStand that should be deleted
-     * @throws IllegalArgumentException if {@code armorStand} is not an instance of CustomArmorStand
+     * @throws IllegalArgumentException if {@code armorStand} is not an instance of
+     *                                  CustomArmorStand
      */
     public abstract void killChairArmorStand(@NotNull ArmorStand armorStand);
 
@@ -71,22 +73,25 @@ public abstract class ChairNMS {
      * @return true if the block is funtiure
      */
     public boolean isFurniture(@NotNull Block block) {
-        return Objects.requireNonNull(Settings.FURNITURE.getValueAsStringList()).contains(block.getType().name());
+        return Objects.requireNonNull(Settings.FURNITURE.getValueAsStringList())
+            .contains(block.getType().name());
     }
 
 
     public abstract boolean hasEmptyMainHand(@NotNull Player player);
 
     /**
-     * Checks if an ArmorStand is or will be used as {@link Chair} with NMS.<br>
-     * This method should be used to identify a {@link Chair} before it has been spawned into the world.<br>
-     * This can for example be used to un-cancel an {@link org.bukkit.event.entity.EntitySpawnEvent}
+     * Checks if an ArmorStand is or will be used as {@link Chair} with NMS.<br> This method should
+     * be used to identify a {@link Chair} before it has been spawned into the world.<br> This can
+     * for example be used to un-cancel an {@link org.bukkit.event.entity.EntitySpawnEvent}
      *
      * @param armorStand {@link ArmorStand} to check
      * @return true if ArmorStand is or will be used as Chair, false otherwise
      * @see ChairManager#isChair(ArmorStand)
      */
-    public abstract boolean isChair(@NotNull ArmorStand armorStand);
+    public boolean isChair(@NotNull ArmorStand armorStand) {
+        return new NBTEntity(armorStand).getBoolean("Chair");
+    }
 
     @Nullable
     public Listener getListener() {
@@ -95,8 +100,10 @@ public abstract class ChairNMS {
 
     public static int getRegenerationAmplifier(Player p) {
         if (!Settings.REGENERATION_ENABLED.getValueAsBoolean() ||
-                Settings.REGENERATION_AMPLIFIER.getValueAsInt() <= 0 ||
-                !p.hasPermission(ChairManager.plugin.getName() + ".regeneration")) return -1;
+            Settings.REGENERATION_AMPLIFIER.getValueAsInt() <= 0 ||
+            !p.hasPermission(ChairManager.plugin.getName() + ".regeneration")) {
+            return -1;
+        }
 
         return Settings.REGENERATION_AMPLIFIER.getValueAsInt() - 1;
     }

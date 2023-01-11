@@ -225,7 +225,8 @@ public class EventListener implements Listener {
 
 
         // Spawn Chair
-        if (getManager().create(e.getPlayer(), e.getClickedBlock())) {
+        if (getManager().create(BetterChairsPlugin.getInstance(), e.getPlayer(), e.getClickedBlock())) {
+            Bukkit.broadcast("created", "debug");
             e.setCancelled(true);
 
             if (Settings.MSG_NOW_SITTING.getValueAsBoolean()) {

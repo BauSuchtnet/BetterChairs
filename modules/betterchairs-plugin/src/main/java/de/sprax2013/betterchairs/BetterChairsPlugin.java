@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -99,6 +100,8 @@ public class BetterChairsPlugin extends JavaPlugin {
     private ChairNMS getNewNMS() {
         String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
+        getLogger().info("trying to load version " + version);
+
         try {
             // Try loading NMS class (package is remapped by maven-shade-plugin)
             return (ChairNMS) Class.forName("betterchairs.nms." + version).getConstructors()[0].newInstance();
@@ -112,9 +115,9 @@ public class BetterChairsPlugin extends JavaPlugin {
 
                 @Override
                 @NotNull
-                public ArmorStand spawnChairArmorStand(@NotNull Location loc, int regenerationAmplifier) {
+                public ArmorStand spawnChairArmorStand(Plugin plugin, @NotNull Location loc, int regenerationAmplifier) {
                     ArmorStand armorStand = loc.getWorld().spawn(loc, ArmorStand.class);
-                    ChairUtils.applyChairProtections(armorStand);
+                    ChairUtils.applyChairProtections(plugin, armorStand);
 
                     // TODO: Support regeneration effect without overwriting #tick()
 

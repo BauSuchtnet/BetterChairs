@@ -21,6 +21,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -28,13 +29,13 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public class v1_12_R1 extends ChairNMS {
     @Override
-    public @NotNull ArmorStand spawnChairArmorStand(@NotNull Location loc, int regenerationAmplifier) {
+    public @NotNull ArmorStand spawnChairArmorStand(Plugin plugin, @NotNull Location loc, int regenerationAmplifier) {
         WorldServer nmsWorld = ((CraftWorld) Objects.requireNonNull(loc.getWorld())).getHandle();
         CustomArmorStand nmsArmorStand = new CustomArmorStand(
                 nmsWorld, loc.getX(), loc.getY(), loc.getZ(), regenerationAmplifier);
         ArmorStand armorStand = (ArmorStand) nmsArmorStand.getBukkitEntity();
 
-        ChairUtils.applyChairProtections(armorStand);
+        ChairUtils.applyChairProtections(plugin, armorStand);
 
         if (!nmsWorld.addEntity(nmsArmorStand, CreatureSpawnEvent.SpawnReason.CUSTOM)) {
             ChairManager.getLogger().warning(Messages.ERR_ANOTHER_PLUGIN_PREVENTING_SPAWN);
